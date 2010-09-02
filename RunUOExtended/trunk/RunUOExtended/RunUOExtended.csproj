@@ -1171,6 +1171,7 @@
     <Compile Include="Scripts\Items\Misc\BulletinBoards.cs" />
     <Compile Include="Scripts\Items\Misc\ClockworkAssembly.cs" />
     <Compile Include="Scripts\Items\Misc\CommunicationCrystals.cs" />
+    <Compile Include="Scripts\Items\Misc\HorsePole.cs" />
     <Compile Include="Scripts\Items\Misc\Corpses\Corpse.cs" />
     <Compile Include="Scripts\Items\Misc\Corpses\CorpseNameAttribute.cs" />
     <Compile Include="Scripts\Items\Misc\Corpses\DecayedCorpse.cs" />
