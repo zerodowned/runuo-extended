@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Commands;
 using Server.Mobiles;
 using Server.Network;
+using Server.Guilds;
 
 namespace Server.Gumps
 {
@@ -10,8 +11,8 @@ namespace Server.Gumps
 	{
 		public static void Initialize()
 		{
-			CommandSystem.Register( "Who", AccessLevel.Counselor, new CommandEventHandler( WhoList_OnCommand ) );
-			CommandSystem.Register( "WhoList", AccessLevel.Counselor, new CommandEventHandler( WhoList_OnCommand ) );
+            CommandSystem.Register("Who", AccessLevel.Player, new CommandEventHandler(WhoList_OnCommand));
+            CommandSystem.Register("WhoList", AccessLevel.Player, new CommandEventHandler(WhoList_OnCommand));
 		}
 
 		[Usage( "WhoList [filter]" )]
@@ -156,8 +157,8 @@ namespace Server.Gumps
 
 			AddPage( 0 );
 
-			AddBackground( 0, 0, BackWidth, BorderSize + totalHeight + BorderSize, BackGumpID );
-			AddImageTiled( BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID );
+            AddBackground(0, 0, BackWidth + EntryWidth + OffsetSize, BorderSize + totalHeight + BorderSize, BackGumpID);
+            AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0) + EntryWidth + OffsetSize, totalHeight, OffsetGumpID);
 
 			int x = BorderSize + OffsetSize;
 			int y = BorderSize + OffsetSize;
@@ -165,11 +166,11 @@ namespace Server.Gumps
 			int emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
 
 			if ( !OldStyle )
-				AddImageTiled( x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, EntryGumpID );
+                AddImageTiled(x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0) + EntryWidth + OffsetSize, EntryHeight, EntryGumpID);
 
 			AddLabel( x + TextOffsetX, y, TextHue, String.Format( "Page {0} of {1} ({2})", page+1, (m_Mobiles.Count + EntryCount - 1) / EntryCount, m_Mobiles.Count ) );
 
-			x += emptyWidth + OffsetSize;
+            x += emptyWidth + OffsetSize + EntryWidth + OffsetSize;
 
 			if ( OldStyle )
 				AddImageTiled( x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID );
@@ -202,17 +203,32 @@ namespace Server.Gumps
 				x = BorderSize + OffsetSize;
 				y += EntryHeight + OffsetSize;
 
-				Mobile m = m_Mobiles[index];
+                PlayerMobile m = (PlayerMobile)m_Mobiles[index];
+
+                BaseGuild g = m.Guild;
+                string guild = "";
+                if (g != null && g.Abbreviation != null && m.DisplayGuildTitle)
+                {
+                    guild = " [" + g.Abbreviation + "]";
+                }
+
+                string region = m.Region.ToString();
+                string name = (m_Owner.AccessLevel >= AccessLevel.Counselor && m.RawName != null) ? m.RawName : m.Name;
 
 				AddImageTiled( x, y, EntryWidth, EntryHeight, EntryGumpID );
-				AddLabelCropped( x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, GetHueFor( m ), m.Deleted ? "(deleted)" : m.Name );
+                AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, GetHueFor(m), m.Deleted ? "(deleted)" : name);
 
 				x += EntryWidth + OffsetSize;
+
+                AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
+                AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, GetHueFor(m), region);
+
+                x += EntryWidth + OffsetSize;
 
 				if ( SetGumpID != 0 )
 					AddImageTiled( x, y, SetWidth, EntryHeight, SetGumpID );
 
-				if ( m.NetState != null && !m.Deleted )
+                if (m.NetState != null && !m.Deleted && m_Owner.AccessLevel >= AccessLevel.Counselor)
 					AddButton( x + SetOffsetX, y + SetOffsetY, SetButtonID1, SetButtonID2, i + 3, GumpButtonType.Reply, 0 );
 			}
 		}
