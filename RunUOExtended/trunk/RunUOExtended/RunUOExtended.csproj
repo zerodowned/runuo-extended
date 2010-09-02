@@ -55,6 +55,7 @@
     <Compile Include="Scripts\Commands\Batch.cs" />
     <Compile Include="Scripts\Commands\BoundingBoxPicker.cs" />
     <Compile Include="Scripts\Commands\ConvertPlayers.cs" />
+    <Compile Include="Scripts\Commands\HearAll.cs" />
     <Compile Include="Scripts\Commands\Decorate.cs" />
     <Compile Include="Scripts\Commands\DecorateMag.cs" />
     <Compile Include="Scripts\Commands\Docs.cs" />
@@ -595,6 +596,7 @@
     <Compile Include="Scripts\Gumps\CategorizedAddGump.cs" />
     <Compile Include="Scripts\Gumps\ClientGump.cs" />
     <Compile Include="Scripts\Gumps\ConfirmReleaseGump.cs" />
+    <Compile Include="Scripts\Gumps\SaveGump.cs" />
     <Compile Include="Scripts\Gumps\Go\ChildNode.cs" />
     <Compile Include="Scripts\Gumps\Go\GoGump.cs" />
     <Compile Include="Scripts\Gumps\Go\LocationTree.cs" />
