@@ -691,7 +691,10 @@ namespace Server.Misc
 				newChar.BankBox.DropItem( ticket );
 			}
 
-			CityInfo city = GetStartLocation( args, young );
+            //Because Malas is the only real map :D
+            CityInfo city = new CityInfo("Luna", "Starting Point", 883, 532, -90, Map.Malas);
+
+			//CityInfo city = GetStartLocation( args, young );
 			//CityInfo city = new CityInfo( "Britain", "Sweet Dreams Inn", 1496, 1628, 10, Map.Felucca );
 
 			newChar.MoveToWorld( city.Location, city.Map );
