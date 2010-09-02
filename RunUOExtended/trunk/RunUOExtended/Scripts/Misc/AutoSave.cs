@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Server;
 using Server.Commands;
+using Server.Gumps;
 
 namespace Server.Misc
 {
@@ -80,7 +81,11 @@ namespace Server.Misc
 			try{ Backup(); }
             catch (Exception e) { Console.WriteLine("WARNING: Automatic backup FAILED: {0}", e); }
 
-			World.Save();
+            foreach (Mobile m in World.Mobiles.Values)
+                m.SendGump(new SaveGump());
+            World.Save(false);
+            foreach (Mobile m in World.Mobiles.Values)
+                m.CloseGump(typeof(SaveGump));
 		}
 
 		private static string[] m_Backups = new string[]
