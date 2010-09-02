@@ -25,7 +25,7 @@ namespace Server.Commands
 	{
 		public static void Initialize()
 		{
-			CommandSystem.Prefix = "[";
+			CommandSystem.Prefix = ".";
 
 			Properties.Register();
 
