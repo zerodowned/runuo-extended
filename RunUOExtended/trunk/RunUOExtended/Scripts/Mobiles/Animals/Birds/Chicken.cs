@@ -1,5 +1,7 @@
 using System;
 using Server.Mobiles;
+using Server.Items;
+using Server.FarmingSystem;
 
 namespace Server.Mobiles
 {
@@ -37,7 +39,16 @@ namespace Server.Mobiles
 
 			Tamable = true;
 			ControlSlots = 1;
-			MinTameSkill = -0.9;
+            MinTameSkill = -0.9;
+
+            // Get some Chicken Legs
+            Backpack pack = new Backpack();
+            pack.Movable = false;
+            pack.AddItem(new ChickenLeg(2));
+            pack.Layer = Layer.Backpack;
+            AddItem(pack);
+
+            FarmingSystemCore.Chickens.Add(Serial, this);
 		}
 
 		public override int Meat{ get{ return 1; } }
@@ -61,7 +72,9 @@ namespace Server.Mobiles
 		{
 			base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
+
+            FarmingSystemCore.Chickens.Add(Serial, this);
 		}
 	}
 }
