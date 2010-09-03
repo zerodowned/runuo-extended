@@ -5,13 +5,13 @@ using Server.FarmingSystem;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a chicken corpse" )]
+	[CorpseName( Strings.Corpse("chicken") )]
 	public class Chicken : BaseCreature
 	{
 		[Constructable]
 		public Chicken() : base( AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
-			Name = "a chicken";
+			Name = Strings.Animal("chicken");
 			Body = 0xD0;
 			BaseSoundID = 0x6E;
 
