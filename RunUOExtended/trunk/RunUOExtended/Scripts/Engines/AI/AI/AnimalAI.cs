@@ -54,19 +54,67 @@ namespace Server.Mobiles
 			else if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
 			{
 				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I have detected {0}, attacking", m_Mobile.FocusMob.Name );
+                    m_Mobile.DebugSay( "I have detected {0}, attacking", m_Mobile.FocusMob.Name );
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
 			}
-			else
-			{
+            else if (AcquireFearFocusMob(m_Mobile.RangePerception / 3))
+            {
+                m_Mobile.DebugSay("There is something near, I go away");
+                if (WalkMobileRange(m_Mobile.FocusMob, 2, true, m_Mobile.RangePerception/2, m_Mobile.RangePerception))
+                {
+                    m_Mobile.DebugSay("Well, here I am safe");
+                    base.DoActionWander();
+                }	
+            }
+            else
+            {
 				base.DoActionWander();
 			}
 
 			return true;
 		}
+        public bool AcquireFearFocusMob(int iRange)
+        {
+            if (m_Mobile.Deleted || m_Mobile.Controlled || m_Mobile.FightMode > FightMode.Aggressor || m_Mobile.Summoned)
+                return false;
 
+            Map map = m_Mobile.Map;
+
+            if (map != null)
+            {
+                Mobile newFocusMob = null;
+                double val = double.MinValue;
+                double theirVal;
+
+                IPooledEnumerable eable = map.GetMobilesInRange(m_Mobile.Location, iRange);
+                
+                foreach (Mobile m in eable)
+                {
+                    if (m.Deleted)
+                        continue;
+                    if (m.Blessed)
+                        continue;
+                    if (m == m_Mobile)// Let's not target ourselves...
+                        continue;
+                    if (!m.Player)
+                        continue;
+                    if (m.AccessLevel > AccessLevel.Player)
+                        continue;
+
+                    theirVal = m_Mobile.GetFightModeRanking(m, FightMode.Closest, true);
+
+                    if (theirVal > val && m_Mobile.InLOS(m))
+                    {
+                        newFocusMob = m;
+                        val = theirVal;
+                    }
+                }
+                m_Mobile.FocusMob = newFocusMob;
+            }
+            return (m_Mobile.FocusMob != null);
+        }
 		public override bool DoActionCombat()
 		{
 			Mobile combatant = m_Mobile.Combatant;
