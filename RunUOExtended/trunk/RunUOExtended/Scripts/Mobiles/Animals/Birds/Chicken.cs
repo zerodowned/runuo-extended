@@ -5,7 +5,7 @@ using Server.FarmingSystem;
 
 namespace Server.Mobiles
 {
-	[CorpseName( Strings.Corpse("chicken") )]
+	[CorpseName( "a chicken corpse" )]
 	public class Chicken : BaseCreature
 	{
 		[Constructable]
