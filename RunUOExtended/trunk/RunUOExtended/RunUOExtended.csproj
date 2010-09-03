@@ -163,6 +163,7 @@
     <Compile Include="Scripts\Engines\Chat\Chatold.cs" />
     <Compile Include="Scripts\Engines\Chat\ChatUser.cs" />
     <Compile Include="Scripts\Engines\Chat\Packets.cs" />
+    <Compile Include="Scripts\Engines\FarmingSystem\FarmingSystemCore.cs" />
     <Compile Include="Scripts\Engines\Craft\Core\CraftContext.cs" />
     <Compile Include="Scripts\Engines\Craft\Core\CraftGroup.cs" />
     <Compile Include="Scripts\Engines\Craft\Core\CraftGroupCol.cs" />
