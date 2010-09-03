@@ -23,13 +23,13 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                Title = "the Barber";
+                Title = Strings.Vendor("barberF");
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                Title = "the Barber";
+                Title = Strings.Vendor("barberM");
             }
 
             AddItem(new FancyShirt(Utility.RandomNeutralHue()));
@@ -49,7 +49,8 @@ namespace Server.Mobiles
         {
             if ((from.InRange(this, 12)) && !(from.InRange(this, 1)))
             {
-                this.Say("Please come closer !");
+
+                this.Say(Strings.Dialog("comeCloser"));
                 return;
             }
             BarberCanHandle(from);
@@ -57,7 +58,7 @@ namespace Server.Mobiles
 
         public void BarberCanHandle(Mobile from)
         {
-            this.Say("What do you want today ?");
+            this.Say(Strings.Dialog("whatDoYouWant"));
             from.SendGump(new BarberGump(from));
         }
 
@@ -94,8 +95,8 @@ namespace Server.Mobiles
         public BarberGump(Mobile owner)
             : base(0, 0)
         {
-            string label0 = string.Format("New HairCut ({0} PO)", HairCutPrice);
-            string label1 = string.Format("New BeardCut ({0} PO)", FacialHairCutPrice);
+            string label0 = string.Format(Strings.Label("newHairCut"), HairCutPrice);
+            string label1 = string.Format(Strings.Label("newBeardCut"), FacialHairCutPrice);
 
             AddBackground(80, 15, 340, 360, 5054);
             AddAlphaRegion(90, 25, 320, 340);
@@ -103,15 +104,15 @@ namespace Server.Mobiles
             AddPage(0);
 
             AddPage(1);
-            AddHtml(215, 30, 280, 27, "Menu", false, false);
-            AddHtml(170, 45, 280, 27, "Make a choice :", false, false);
+            AddHtml(215, 30, 280, 27, Strings.Label("menu"), false, false);
+            AddHtml(170, 45, 280, 27, Strings.Label("makechoice"), false, false);
             AddButton(110, 80, 0xFA5, 0xFB7, 2, GumpButtonType.Reply, 1);
             AddButton(110, 110, 0xFA5, 0xFB7, 3, GumpButtonType.Reply, 1);
             AddButton(110, 320, 0xFA5, 0xFB7, 0, GumpButtonType.Reply, 1);
 
             AddLabel(145, 80, 0, label0);
             AddLabel(145, 110, 0, label1);
-            AddLabel(145, 320, 0, "Cancel");
+            AddLabel(145, 320, 0, Strings.Label("cancel"));
 
         }
 
@@ -136,7 +137,7 @@ namespace Server.Mobiles
                         }
                         else
                         {
-                            from.Say("I guess this is not for poor people !!");
+                            from.Say(Strings.Dialog("notForPoor"));
                         }
                         break;
                     }
@@ -150,7 +151,7 @@ namespace Server.Mobiles
                         }
                         else
                         {
-                            from.Say("I guess this is not for poor people !!");
+                            from.Say(Strings.Dialog("notForPoor"));
                         }
                         break;
                     }
@@ -175,7 +176,7 @@ namespace Server.Mobiles
 
             if (m_type == 0)
             {
-                AddHtml(220, 40, 280, 27, "HairCut", false, false);
+                AddHtml(220, 40, 280, 27, Strings.Label("hairCut"), false, false);
 
                 AddButton(110, 70, 0xFA5, 0xFA7, 3, GumpButtonType.Reply, 1);
                 AddButton(110, 100, 0xFA5, 0xFA7, 4, GumpButtonType.Reply, 1);
@@ -188,20 +189,20 @@ namespace Server.Mobiles
                 AddButton(110, 310, 0xFA5, 0xFA7, 11, GumpButtonType.Reply, 1);
                 AddButton(110, 340, 0xFA5, 0xFA7, 12, GumpButtonType.Reply, 1);
 
-                AddLabel(145, 70, 0, "Short");
-                AddLabel(145, 100, 0, "Long");
-                AddLabel(145, 130, 0, "Ponytail");
-                AddLabel(145, 160, 0, "Mohawk");
-                AddLabel(145, 190, 0, "Pageboy");
-                AddLabel(145, 220, 0, "Receding");
-                AddLabel(145, 250, 0, "2-tails");
-                AddLabel(145, 280, 0, "Topknot");
-                AddLabel(145, 310, 0, "Afro");
-                AddLabel(145, 340, 0, "Bald");
+                AddLabel(145, 70, 0, Strings.Body("ShortHair"));
+                AddLabel(145, 100, 0, Strings.Body("LongHair"));
+                AddLabel(145, 130, 0, Strings.Body("Ponytail"));
+                AddLabel(145, 160, 0, Strings.Body("Mohawk"));
+                AddLabel(145, 190, 0, Strings.Body("Pageboy"));
+                AddLabel(145, 220, 0, Strings.Body("Receding"));
+                AddLabel(145, 250, 0, Strings.Body("2tails"));
+                AddLabel(145, 280, 0, Strings.Body("Topknot"));
+                AddLabel(145, 310, 0, Strings.Body("Afro"));
+                AddLabel(145, 340, 0, Strings.Body("Bald"));
             }
             else
             {
-                AddHtml(220, 40, 280, 27, "BeardCut", false, false);
+                AddHtml(220, 40, 280, 27, Strings.Label("beardCut"), false, false);
                 
                 AddButton(110, 70, 0xFA5, 0xFA7, 21, GumpButtonType.Reply, 1);
                 AddButton(110, 100, 0xFA5, 0xFA7, 22, GumpButtonType.Reply, 1);
@@ -212,14 +213,14 @@ namespace Server.Mobiles
                 AddButton(110, 250, 0xFA5, 0xFA7, 27, GumpButtonType.Reply, 1);
                 AddButton(110, 280, 0xFA5, 0xFA7, 28, GumpButtonType.Reply, 1);
 
-                AddLabel(145, 70, 0, "Goatee");
-                AddLabel(145, 100, 0, "Med Short Beard");
-                AddLabel(145, 130, 0, "Vandyke");
-                AddLabel(145, 160, 0, "Long Beard");
-                AddLabel(145, 190, 0, "Short Beard");
-                AddLabel(145, 220, 0, "Med Long Beard");
-                AddLabel(145, 250, 0, "Mustache");
-                AddLabel(145, 280, 0, "No beard");
+                AddLabel(145, 70, 0, Strings.Body("Goatee"));
+                AddLabel(145, 100, 0, Strings.Body("MedShortBeard"));
+                AddLabel(145, 130, 0, Strings.Body("Vandyke"));
+                AddLabel(145, 160, 0, Strings.Body("LongBeard"));
+                AddLabel(145, 190, 0, Strings.Body("ShortBeard"));
+                AddLabel(145, 220, 0, Strings.Body("MedLongBeard"));
+                AddLabel(145, 250, 0, Strings.Body("Mustache"));
+                AddLabel(145, 280, 0, Strings.Body("Nobeard"));
             }
 
         }
@@ -233,7 +234,7 @@ namespace Server.Mobiles
             {
                 if (gold.Amount < m_price)
                 {
-                    from.Say("I guess this is not for poor people !!");
+                    from.Say(Strings.Dialog("notForPoor"));
                     from.Frozen = false;
                 }
                 else
@@ -246,7 +247,7 @@ namespace Server.Mobiles
             }
             else
             {
-                from.Say("I guess this is not for poor people !!");
+                from.Say(Strings.Dialog("notForPoor"));
             }
         }
 
@@ -381,7 +382,7 @@ namespace Server.Mobiles
                         {
                             m_from.PlaySound(0x248);
                             m_from.Frozen = false;
-                            m_from.Say("Thanks Buddy !");
+                            m_from.Say(Strings.Dialog("thanksBuddy"));
                             break;
                         }
                 }

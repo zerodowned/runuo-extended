@@ -562,6 +562,7 @@
     <Compile Include="Scripts\Engines\Spawner\Spawner.cs" />
     <Compile Include="Scripts\Engines\Spawner\SpawnerGump.cs" />
     <Compile Include="Scripts\Engines\Spawner\SpawnerType.cs" />
+    <Compile Include="Scripts\Engines\Translation\Strings.cs" />
     <Compile Include="Scripts\Engines\Treasures of Tokuno\GreaterArtifacts.cs" />
     <Compile Include="Scripts\Engines\Treasures of Tokuno\LesserArtifacts.cs" />
     <Compile Include="Scripts\Engines\Treasures of Tokuno\TreasuresOfTokuno.cs" />

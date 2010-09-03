@@ -71,7 +71,7 @@ namespace Server.Items
 			: base( 0x14E8 )
 		{
 			Weight = 10.0;
-			Name = "Horse Pole";
+			Name = Strings.Item("horsePole");
 		}
 
         public HorsePole(Serial serial)
@@ -102,14 +102,14 @@ namespace Server.Items
                 m_Animal.ControlTarget = m_AnimalOwner;
                 m_Animal.ControlOrder = OrderType.Follow;
                 m_Animal = null;
-                from.Say("*détache sa monture*");
+                from.Emote(Strings.Emote("detachMount"));
             }
         }
 
         public override void OnDoubleClick(Mobile from)
         {
             if (this.Movable)
-                from.SendMessage("This thing cannot work if movable");
+                from.SendMessage(Strings.Message("cannotBeMovable"));
             else if (!from.InRange(this.GetWorldLocation(), 2))
                 from.SendLocalizedMessage(500486);   //That is too far away. 
             else if (Animal != null)
@@ -121,23 +121,23 @@ namespace Server.Items
                     if (AnimalOwner == null || AnimalOwner.Deleted)
                     {
                         Free(null);
-                        from.SendMessage("Freedom is back for this poor ownerless animal !");
+                        from.SendMessage(Strings.Message("freedomOwnlerless"));
                     }
                     else if (from == AnimalOwner)
                     {
                         if (from.Followers + m_Animal.ControlSlots > from.FollowersMax)
-                            from.SendMessage("Maximum followers reached!");
+                            from.SendMessage(Strings.Message("maxFollowers"));
                         else
                             Free(from);
                     }
                     else
-                        from.SendMessage("{0} already use the pole !", AnimalOwner.Name);
+                        from.SendMessage(Strings.Message("poleAlreadyUsed"), AnimalOwner.Name);
                 }
             }
             else
             {
                 from.Target = new HorsePoleTarget(this);
-                from.SendMessage("Witch animal do you want to attach ?");
+                from.SendMessage(Strings.Message("witchToAttach"));
             }
         }
 
@@ -170,15 +170,15 @@ namespace Server.Items
                             creature.ControlMaster = null;
                             creature.Blessed = true;
 
-                            from.Say("*Attach the animal*");
+                            from.Emote(Strings.Emote("attachMount"));
                         }
                         else if (creature.AI == AIType.AI_None)
                         {
-                            from.SendMessage("This animal is already attached");
+                            from.SendMessage(Strings.Message("alreadyAttached"));
                         }
                         else
                         {
-                            from.SendMessage("This is not your animal !");
+                            from.SendMessage(Strings.Message("notYourAnimal"));
                         }
                     }
                     else if (targ is PlayerMobile)
@@ -187,16 +187,16 @@ namespace Server.Items
 
                         if (m == from)
                         {
-                            from.Say("*tried to attach himself to the pole*");
+                            from.Emote(Strings.Emote("attachMyself"));
                         }
                         else
                         {
-                            from.Say("*tried but failed to attach {0} to the pole*", m.Name);
+                            from.Emote(Strings.Emote("attachHuman"), m.Name);
                         }
                     }
                     else
                     {
-                        from.SendMessage("This is not a mountable creature !");
+                        from.SendMessage(Strings.Message("notMountable"));
                     }
                 }
                 return;
