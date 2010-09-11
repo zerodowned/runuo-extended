@@ -301,6 +301,7 @@ namespace Server.Commands
         {
             bool real = true;
             bool location = false;
+            bool statsskills = false;
             public CloneTarget()
                 : base(-1, false, TargetFlags.None)
             {
@@ -398,6 +399,8 @@ namespace Server.Commands
                                 }
                             }
                         }
+                        if( !real)
+                            CopyProps(from, targ, true, true, location);
                     }
                 }
             }
@@ -856,7 +859,89 @@ namespace Server.Commands
             }
             return toReturn;
         }
-        
+
+
+        /*copy the poropertys from one Mobile to another*/
+        private static void CopyProps(Mobile target, Mobile from, bool stats, bool skills, bool location)
+        {
+            try
+            {
+                if (from.Map == Map.Internal)
+                    from.MoveToWorld(target.Location, target.Map);
+
+                if (stats)
+                    CopyMobileProps(target, from, location, "Parent", "NetState", "Player", "AccessLevel");
+                else
+                    CopyMobileProps(target, from, location, "Parent", "NetState", "Player", "AccessLevel", "RawStr", "Str", "RawDex", "Dex", "RawInt", "Int", "Hits", "Mana", "Stam");
+
+                if (skills)
+                    //Console.WriteLine("Copy {2} Skills from {0} to {1}", from, target, target.Skills.Length);
+                    for (int i = 0; i < target.Skills.Length; ++i)
+                    {
+                        //Console.WriteLine("Skill {0} old Value = {1} new Value = {2}", i, target.Skills[i].Base, from.Skills[i].Base);
+                        target.Skills[i].Base = from.Skills[i].Base;
+
+                    }
+            }
+            catch
+            {
+                Console.WriteLine("Error in Control.cs -> CopyProps(Mobile from, Mobile target, bool stats, bool skills)");
+                return;
+            }
+        }
+
+        private static void CopyMobileProps(Mobile dest, Mobile src, bool location, params string[] oProps)
+        {
+            //Type type = src.GetType(); didn't work correct
+            List<String> omitProps = new List<String>(oProps);
+            if (!location)
+                omitProps.AddRange(new String[] { "Direction", "Location", "Map" });
+            Type type = typeof(Mobile);
+
+            PropertyInfo[] props = type.GetProperties();
+
+            bool omit = false;
+            //Console.WriteLine("----- COPPY PROPS ------");
+            //Console.WriteLine("From: {0} to {1}", src.Name, dest.Name);
+            for (int i = 0; i < props.Length; i++)
+            {
+                try
+                {
+                    for (int j = 0; j < omitProps.Count; j++)
+                    {
+                        if (string.Compare(omitProps[j], props[i].Name, true) == 0)
+                        {
+                            omit = true;
+                            //Console.WriteLine("Skip Value {0} @ {1} = {2}", props[i].Name, dest.Name, props[i].GetValue( src, null )); 
+                            break;
+                        }
+                    }
+
+                    if (props[i].CanRead && props[i].CanWrite && !omit)
+                    {
+                        //Setzte am Ziel 
+                        //Console.WriteLine("SetValue {0} @ {1} = {2}", props[i].Name, dest.Name, props[i].GetValue( src, null )); 
+                        //dest.SendMessage("SetValue {0}", props[i].Name); 
+                        props[i].SetValue(dest, props[i].GetValue(src, null), null);
+                        //Console.WriteLine("-> {0}", props[i].GetValue( dest, null ));
+                    }
+
+                    omit = false; //Weiter kopieren
+                }
+                catch
+                {
+                    Console.WriteLine("Can't copy property: Control.cs");
+                }
+            }
+        }
+
+        private static bool CompareType(object o, Type type)
+        {
+            if (o.GetType() == type || o.GetType().IsSubclassOf(type))
+                return true;
+            else
+                return false;
+        }
     }
 }
 namespace Server.Items
