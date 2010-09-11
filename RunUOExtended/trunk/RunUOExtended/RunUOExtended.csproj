@@ -55,7 +55,7 @@
     <Compile Include="Scripts\Commands\Batch.cs" />
     <Compile Include="Scripts\Commands\BoundingBoxPicker.cs" />
     <Compile Include="Scripts\Commands\ConvertPlayers.cs" />
-    <Compile Include="Scripts\Commands\HearAll.cs" />
+    <Compile Include="Scripts\Commands\StaffCommands.cs" />
     <Compile Include="Scripts\Commands\Decorate.cs" />
     <Compile Include="Scripts\Commands\DecorateMag.cs" />
     <Compile Include="Scripts\Commands\Docs.cs" />
