@@ -20,6 +20,7 @@ namespace Server.Commands
             CommandSystem.Register("GmMe", AccessLevel.GameMaster, new CommandEventHandler(GmMe_OnCommand));
             CommandSystem.Register("Refresh", AccessLevel.GameMaster, new CommandEventHandler(Refresh_OnCommand));
             CommandSystem.Register("Clone", AccessLevel.GameMaster, new CommandEventHandler(Clone_OnCommand));
+            CommandSystem.Register("UnClone", AccessLevel.GameMaster, new CommandEventHandler(UnClone_OnCommand));
             CommandSystem.Register("CloneMe", AccessLevel.GameMaster, new CommandEventHandler(CloneMe_OnCommand));
             EventSink.Speech += new SpeechEventHandler(HearAllOnSpeech);
         }
@@ -100,6 +101,13 @@ namespace Server.Commands
         public static void Clone_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new CloneTarget();
+        }
+
+        [Usage("UnClone")]
+        [Description("A cloned creature is back to life.")]
+        public static void UnClone_OnCommand(CommandEventArgs e)
+        {
+            e.Mobile.Target = new UnCloneTarget();
         }
 
         [Usage("CloneMe")]
@@ -336,6 +344,27 @@ namespace Server.Commands
 
                         targ.Frozen = true;
                         targ.Hidden = true;
+                    }
+                }
+            }
+        }
+        private class UnCloneTarget : Target
+        {
+            public UnCloneTarget()
+                : base(-1, false, TargetFlags.None)
+            {
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is Mobile)
+                {
+                    Mobile targ = (Mobile)targeted;
+
+                    if (from != targ && from.AccessLevel > targ.AccessLevel)
+                    {
+                        targ.Frozen = false;
+                        targ.Hidden = false;
                     }
                 }
             }
