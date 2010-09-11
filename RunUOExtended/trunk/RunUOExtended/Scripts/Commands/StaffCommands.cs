@@ -21,30 +21,6 @@ namespace Server.Commands
 {
     public class StaffCommands
     {
-        private static Layer[] m_DesiredLayerOrder = new Layer[]
-        {
-             Layer.Cloak,
-             Layer.Bracelet,
-             Layer.Ring,
-             Layer.Shirt,
-             Layer.Pants,
-             Layer.InnerLegs,
-             Layer.Shoes,
-             Layer.Arms,
-             Layer.InnerTorso,
-             Layer.MiddleTorso,
-             Layer.OuterLegs,
-             Layer.Neck,
-             Layer.Waist,
-             Layer.Gloves,
-             Layer.OuterTorso,
-             Layer.OneHanded,
-             Layer.TwoHanded,
-             Layer.FacialHair,
-             Layer.Hair,
-             Layer.Helm
-        };
-
         public static AccessLevel accessLevel = AccessLevel.GameMaster;
         private static List<Mobile> m_HearAll = new List<Mobile>();
 
